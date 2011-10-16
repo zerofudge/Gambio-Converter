@@ -23,7 +23,7 @@ class ConvertController {
         def f = params.factor as double
         log.debug "factor will be $f"
 
-        def reader = new CSVReader(file.newReader ('ISO-8859'), ';' as char)
+        def reader = new CSVReader(file.newReader ('ISO-8859-1'), ';' as char)
 
         def downloadDir = new File("/tmp/images_${new Date().time}")
         if (!downloadDir.exists() && !downloadDir.mkdir())
@@ -39,7 +39,7 @@ class ConvertController {
 		}
 
         response.setContentType("application/octet-stream")
-        response.setHeader("Content-disposition", "attachment;filename=/tmp/${file.name}")
+        response.setHeader("Content-disposition", "attachment;filename=${ofile.name}")
         response.outputStream << ofile.newInputStream()
     }
 
