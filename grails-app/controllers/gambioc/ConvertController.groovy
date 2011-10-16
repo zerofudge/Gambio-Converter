@@ -29,7 +29,8 @@ class ConvertController {
         if (!downloadDir.exists() && !downloadDir.mkdir())
             throw new FileNotFoundException(downloadDir, "path does not exists and cannot be created, check permissions")
 
-        new File("/tmp/${file.name}").withWriter { out ->
+        def ofile
+        (ofile = new File("/tmp/${file.name}")).withWriter { out ->
 	        reader.readAll().eachWithIndex { line, idx ->
 	            if(idx){
                     out.println convertLine(line, f, downloadDir)
@@ -39,7 +40,7 @@ class ConvertController {
 
         response.setContentType("application/octet-stream")
         response.setHeader("Content-disposition", "attachment;filename=/tmp/${file.name}")
-        response.outputStream << file.newInputStream()
+        response.outputStream << ofile.newInputStream()
     }
 
 
