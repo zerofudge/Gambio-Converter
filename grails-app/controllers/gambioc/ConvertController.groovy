@@ -57,11 +57,11 @@ class ConvertController {
         rtn << ''
         rtn << resource[0]
         rtn << ((resource[10] =~ /(?)erotik/)? 0 : 1)
-        rtn << (((resource[4]-'EUR').trim() as double) * factor)
+        rtn << String.format ('%.2f', ((resource[4]-'EUR').trim() as double) * factor)
         rtn << 1
         rtn << (((resource[9] as int) > 0)? 1 : 0)
         rtn << resource[8]
-        rtn << ((resource[7] ==~ /9+/)? null : resource[7])
+        rtn << ((resource[7] ==~ /9+/)? '' : resource[7])
         rtn << ''
         rtn << ''
         rtn << downloadImage(resource[6].toURL(), downloadPath)
@@ -100,10 +100,10 @@ class ConvertController {
 
         def t = new Date().time
         try {
-	        def ext = url.file.substring(url.file.lastIndexOf('/')).replaceAll (/^[^\.]*/, '')
-	        def o = new BufferedOutputStream(new FileOutputStream(new File(path, "$t$ext")))
-	        o << url.openStream ()
-	        o.close ()
+//	        def ext = url.file.substring(url.file.lastIndexOf('/')).replaceAll (/^[^\.]*/, '')
+//	        def o = new BufferedOutputStream(new FileOutputStream(new File(path, "$t$ext")))
+//	        o << url.openStream ()
+//	        o.close ()
         } catch (IOException _e) {
             log.warn _e.message
             return ''
