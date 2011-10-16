@@ -100,10 +100,10 @@ class ConvertController {
 
         def t = new Date().time
         try {
-//	        def ext = url.file.substring(url.file.lastIndexOf('/')).replaceAll (/^[^\.]*/, '')
-//	        def o = new BufferedOutputStream(new FileOutputStream(new File(path, "$t$ext")))
-//	        o << url.openStream ()
-//	        o.close ()
+	        def ext = url.file.substring(url.file.lastIndexOf('/')).replaceAll (/^[^\.]*/, '')
+	        def o = new BufferedOutputStream(new FileOutputStream(new File(path, "$t$ext")))
+	        o << url.openStream ()
+	        o.close ()
         } catch (IOException _e) {
             log.warn _e.message
             return ''
