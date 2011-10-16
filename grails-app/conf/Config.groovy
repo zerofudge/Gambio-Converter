@@ -1,3 +1,7 @@
+import org.apache.log4j.ConsoleAppender
+import org.apache.log4j.DailyRollingFileAppender
+import org.apache.log4j.PatternLayout
+
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
@@ -65,26 +69,60 @@ environments {
 
 }
 
+// set per-environment serverURL stem for creating absolute links
+def log4jConsoleLogLevel = Priority.DEBUG
+def log4jAppFileLogLevel = Priority.DEBUG
+
+
+// TODO logging with linenumbers %L break most of the time, #GROOVY-2208
+def logPattern = new PatternLayout('[%d{HH:mm:ss}] [%5p] [%t] [%c{1}:%L] %m%n')
+
 // log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    println "log4j level: console: ${log4jConsoleLogLevel}, file: ${log4jAppFileLogLevel}"
 
-    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages', //  GSP
-           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping', // URL mapping
-           'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
+    error 'org.codehaus.groovy.grails.commons', // core / classloading
+          'org.codehaus.groovy.grails.plugins', // plugins
+          'org.codehaus.groovy.grails.orm.hibernate', // hibernate itg
+          'org.springframework',
+          'org.hibernate',
+          'net.sf.ehcache.hibernate',
+          'grails',
+          'groovyx.net.http'
 
-    warn   'org.mortbay.log'
+    info 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+          'org.codehaus.groovy.grails.web.pages', //  GSP
+          'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+          'org.codehaus.groovy.grails.web.mapping' // URL mapping
+
+    debug 'de.juwimm', 'grails.app'
+
+    appenders {
+        appender new ConsoleAppender(name: "console",
+            threshold: log4jConsoleLogLevel,
+            layout: logPattern
+        )
+        appender new DailyRollingFileAppender(name: "appFile",
+            threshold: log4jAppFileLogLevel,
+            file: "/tmp/gambioc.log",
+            datePattern: "'.'yyyy-MM-dd",
+            layout: logPattern
+        )
+        //'null' name: 'stacktrace'
+    }
+
+    root {
+        error 'console', 'appFile'
+        additivity = true
+    }
+}
+
+
+fileuploader {
+	csv {
+		maxSize = 1024 * 1024 * 512 //256 MB
+		allowedExtensions = ["csv","txt"]
+		path = "/tmp/csv/"
+	}
 }
