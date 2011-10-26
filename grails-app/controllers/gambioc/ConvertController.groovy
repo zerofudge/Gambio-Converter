@@ -74,7 +74,7 @@ class ConvertController {
         rtn << ''
         rtn << resource[5]
 
-        def categories = (resource[10].split ('/') ?: [])
+        def categories = (resource[10].split ('/').flatten() ?: [])
         def s = categories.size()
         if (s < 7) {
             s.upto(7) {
