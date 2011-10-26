@@ -66,11 +66,11 @@ class ConvertController {
         rtn << ''
         rtn << ''
         rtn << downloadImage(resource[6].toURL(), downloadPath)
-        rtn << "\"${resource[2]}\""
-        rtn << "\"${resource[11]}\""
+        rtn << "\"${resource[2].replace('|', ',')}\""
+        rtn << "\"${resource[11].replace('|', ',')}\""
         rtn << ''
-        rtn << "\"${resource[2]}\""
-        rtn << "\"${resource[11]}\""
+        rtn << "\"${resource[2].replace('|', ',')}\""
+        rtn << "\"${resource[11].replace('|', ',')}\""
         rtn << ''
         rtn << resource[5]
 
