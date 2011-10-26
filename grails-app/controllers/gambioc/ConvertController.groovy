@@ -7,7 +7,8 @@ class ConvertController {
 	static tmp = System.properties['java.io.tmpdir']
 
     def index = {
-        log.debug "Uploaded file with id=${params.ufileId}"
+        if (params.ufileId)
+	        log.debug "Uploaded file with id=${params.ufileId}"
         [files: UFile.list(), params:params]
     }
 
@@ -99,7 +100,8 @@ class ConvertController {
         log.debug "going to download $url"
 
         def t = new Date().time
-        def ext = url.file.substring(url.file.lastIndexOf('/')).replaceAll (/^[^\.]*/, '')
+        def ext = url.file.substring(url.file.lastIndexOf('/')).replaceAll (/^[^\.]*/, '') ?: '.jpg'
+
         try {
 	        def o = new BufferedOutputStream(new FileOutputStream(new File(path, "$t$ext")))
 	        o << url.openStream ()
