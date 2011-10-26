@@ -62,15 +62,15 @@ class ConvertController {
         rtn << 1
         rtn << (((resource[9] as int) > 0)? 1 : 0)
         rtn << resource[8]
-        rtn << ((resource[7] ==~ /9+/)? '' : resource[7])
+        rtn << ((resource[7] ==~ /9+/)? '' : "${resource[7]}" )
         rtn << ''
         rtn << ''
         rtn << downloadImage(resource[6].toURL(), downloadPath)
-        rtn << resource[2]
-        rtn << resource[11]
+        rtn << "\"${resource[2]}\""
+        rtn << "\"${resource[11]}\""
         rtn << ''
-        rtn << resource[2]
-        rtn << resource[11]
+        rtn << "\"${resource[2]}\""
+        rtn << "\"${resource[11]}\""
         rtn << ''
         rtn << resource[5]
 
