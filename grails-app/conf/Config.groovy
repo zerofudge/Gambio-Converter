@@ -73,13 +73,15 @@ environments {
 def log4jConsoleLogLevel = Priority.DEBUG
 def log4jAppFileLogLevel = Priority.DEBUG
 
+def tmp = System.properties['java.io.tmpdir']
+println "work dir is $tmp"
 
 // TODO logging with linenumbers %L break most of the time, #GROOVY-2208
 def logPattern = new PatternLayout('[%d{HH:mm:ss}] [%5p] [%t] [%c{1}:%L] %m%n')
 
 // log4j configuration
 log4j = {
-    println "log4j level: console: ${log4jConsoleLogLevel}, file: ${log4jAppFileLogLevel}"
+    println "log4j level: console: $log4jConsoleLogLevel, file: $log4jAppFileLogLevel"
 
     error 'org.codehaus.groovy.grails.commons', // core / classloading
           'org.codehaus.groovy.grails.plugins', // plugins
@@ -105,7 +107,7 @@ log4j = {
         )
         appender new DailyRollingFileAppender(name: "appFile",
             threshold: log4jAppFileLogLevel,
-            file: "/tmp/gambioc.log",
+            file: "/$tmp/gambioc.log",
             datePattern: "'.'yyyy-MM-dd",
             layout: logPattern
         )
@@ -123,6 +125,6 @@ fileuploader {
 	csv {
 		maxSize = 1024 * 1024 * 512 //256 MB
 		allowedExtensions = ["csv","txt"]
-		path = "/tmp/csv/"
+		path = "/$tmp/csv/"
 	}
 }

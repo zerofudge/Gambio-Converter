@@ -4,6 +4,7 @@ import au.com.bytecode.opencsv.CSVReader
 import com.lucastex.grails.fileuploader.UFile
 
 class ConvertController {
+	static tmp = System.properties['java.io.tmpdir']
 
     def index = {
         log.debug "Uploaded file with id=${params.ufileId}"
@@ -25,12 +26,12 @@ class ConvertController {
 
         def reader = new CSVReader(file.newReader ('ISO-8859-1'), ';' as char)
 
-        def downloadDir = new File("/tmp/images_${new Date().time}")
+        def downloadDir = new File("/$tmp/images_${new Date().time}")
         if (!downloadDir.exists() && !downloadDir.mkdir())
             throw new FileNotFoundException(downloadDir, "path does not exists and cannot be created, check permissions")
 
         def ofile
-        (ofile = new File("/tmp/${file.name}")).withWriter { out ->
+        (ofile = new File("/$tmp/${file.name}")).withWriter { out ->
 	        reader.readAll().eachWithIndex { line, idx ->
 	            if(idx){
                     out.println convertLine(line, f, downloadDir)
@@ -99,8 +100,8 @@ class ConvertController {
         log.debug "going to download $url"
 
         def t = new Date().time
+        def ext = url.file.substring(url.file.lastIndexOf('/')).replaceAll (/^[^\.]*/, '')
         try {
-	        def ext = url.file.substring(url.file.lastIndexOf('/')).replaceAll (/^[^\.]*/, '')
 	        def o = new BufferedOutputStream(new FileOutputStream(new File(path, "$t$ext")))
 	        o << url.openStream ()
 	        o.close ()
@@ -109,7 +110,7 @@ class ConvertController {
             return ''
         }
 
-        log.debug "downloaded $url to $t"
-        "$t"
+        log.debug "downloaded $url to $t$ext"
+        "$t$ext"
     }
 }
