@@ -107,7 +107,7 @@ class ConvertController {
 	        o << url.openStream ()
 	        o.close ()
         } catch (IOException _e) {
-            log.warn _e.message
+            log.warn "${_e.class.simpleName}: _e.message"
             return ''
         }
 
