@@ -145,7 +145,7 @@ class ConvertController {
         // 46 p_keywords.en
         rtn << ''
         // 47 p_url.en
-        rtn << resource[5]
+        rtn << "\"${resource[5]}\""
         // 48 p_name.de
         rtn << "${resource[2].replace('|', ',')}"
         // 49 p_desc.de
@@ -161,7 +161,7 @@ class ConvertController {
         // 54 p_keywords.de
         rtn << ''
         // 55 p_url.de
-        rtn << resource[5]
+        rtn << "\"${resource[5]}\""
 
         // 56..61 p_cat0..5
         def categories = (resource[10].split ('/').flatten() ?: [])
