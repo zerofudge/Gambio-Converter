@@ -33,7 +33,7 @@ class ConvertController {
             throw new FileNotFoundException(downloadDir, "path does not exists and cannot be created, check permissions")
 
         def ofile
-        (ofile = new File("/$tmp/${file.name}")).withWriter { out ->
+        (ofile = new File("/$tmp/${file.name}")).withWriter('ISO-8859-1') { out ->
 	        reader.readAll().eachWithIndex { line, idx ->
 	            if(idx){
                     out.println convertLine(line, f, downloadDir)
@@ -41,7 +41,8 @@ class ConvertController {
 	        }
 		}
 
-        response.setContentType("application/octet-stream")
+        response.setContentType('application/octet-stream;charset=ISO-8859-1')
+        response.setHeader ('Encoding', 'ISO-8829-1')
         response.setHeader("Content-disposition", "attachment;filename=${ofile.name}")
         response.outputStream << ofile.newInputStream()
     }
