@@ -1,11 +1,11 @@
 #!/bin/bash
 
-LIMIT=36
+LIMIT=62
 var=1
 
 until (( var > LIMIT ))
 do  
-    echo "field $((var-1))"
+    echo "field $(( var-1 ))"
     cat $1 | cut -d '|' -f "$var" | sed 's/^/"/' |sed 's/$/"/' |sort|uniq
     (( var++ ))
 done    
