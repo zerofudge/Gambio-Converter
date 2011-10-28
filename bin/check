@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LIMIT=62
+LIMIT=63
 var=1
 
 until (( var > LIMIT ))

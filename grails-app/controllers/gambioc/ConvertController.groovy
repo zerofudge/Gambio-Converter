@@ -34,6 +34,7 @@ class ConvertController {
 
         def ofile
         (ofile = new File("/$tmp/${file.name}")).withWriter('ISO-8859-1') { out ->
+            out.println 'XTSOL|p_id|p_model|p_stock|p_sorting|p_startpage|p_startpage_sort|p_shipping|p_tpl|p_opttpl|p_manufacturer|p_fsk18|p_priceNoTax|p_priceNoTax.1|p_priceNoTax.2|p_priceNoTax.3|p_tax|p_status|p_weight|p_ean|p_disc|p_date_added|p_last_modified|p_date_available|p_ordered|nc_ultra_shipping_costs|gm_show_date_added|gm_show_price_offer|gm_show_qty_info|gm_price_status|gm_min_order|gm_graduated_qty|gm_options_template|p_vpe|p_vpe_status|p_vpe_value|p_image.1|p_image.2|p_image.3|p_image|p_name.en|p_desc.en|p_shortdesc.en|p_meta_title.en|p_meta_desc.en|p_meta_key.en|p_keywords.en|p_url.en|p_name.de|p_desc.de|p_shortdesc.de|p_meta_title.de|p_meta_desc.de|p_meta_key.de|p_keywords.de|p_url.de|p_cat.0|p_cat.1|p_cat.2|p_cat.3|p_cat.4|p_cat.5|p_cat.6'
 	        reader.readAll().eachWithIndex { line, idx ->
 	            if(idx){
                     out.println convertLine(line, f, downloadDir)
@@ -164,17 +165,19 @@ class ConvertController {
         // 55 p_url.de
         rtn << "\"${resource[5]}\""
 
-        // 56..61 p_cat0..5
-        def categories = (resource[10].split ('/').flatten() ?: [])
+        // 56..62 p_cat0..6
+        def CATZ = 7
+        def categories = (resource[10].replaceAll (/\|/, '/').split ('/').flatten() ?: [])
         def s = categories.size()
-        if (s < 5) {
-            (s+1).upto(5) {
+        if (s < CATZ) {
+            (s+1).upto(CATZ) {
                 categories << ''
             }
         }
         categories.each { rtn << it }
 
-        rtn.join ('|')
+        // wtf, evil fudge...
+        rtn[0..62].join ('|')
     }
 
     // downloads file behind url, returns simple file name
