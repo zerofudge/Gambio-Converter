@@ -66,7 +66,7 @@ class ConvertController {
         // 6 p_startpage_sort
         rtn << 0
         // 7 p_shipping
-        rtn << 1
+        rtn << (((resource[9] as double) > 0)? 0 : 2)
         // 8 p_tpl
         rtn << 'default'
         // 9 p_opttpl
@@ -86,7 +86,7 @@ class ConvertController {
         // 16 p_tax
         rtn << 1
         // 17 p_status
-        rtn << (((resource[9] as int) > 0)? 1 : 0)
+        rtn << (((resource[9] as double) > 0)? 1 : 0)
         // 18 p_weight
         rtn << String.format ('%.2f', (resource[8]-'kg').trim() as double)
         // 19 p_ean
