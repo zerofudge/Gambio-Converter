@@ -43,7 +43,7 @@ class ConvertController {
 		}
 
         response.setContentType('application/octet-stream;charset=ISO-8859-1')
-        response.setHeader ('Encoding', 'ISO-8829-1')
+        response.setHeader ('Encoding', 'ISO-8859-1')
         response.setHeader("Content-disposition", "attachment;filename=${ofile.name}")
         response.outputStream << ofile.newInputStream()
     }
